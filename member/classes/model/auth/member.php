@@ -88,4 +88,32 @@ class Model_Auth_Member extends ORM
 			->execute($this->_db)
 			->get('total_count');
 	}
+
+	public static function get_password_validation($values)
+	{
+		return Validation::factory($values)
+			->rule('password', 'min_length', array(':value', 6));
+	}
+
+	public function create_user($values, $expected)
+	{
+		$extra_validation = Model_Member::get_password_validation($values)
+			->rule('password', 'not_empty');
+
+		return $this->values($values, $expected)->create($extra_validation);
+	}
+
+	public function update_user($values, $expected = NULL)
+	{
+		if (empty($values['password']))
+		{
+			unset($values['password']);
+		}
+
+		// Validation for passwords
+		$extra_validation = Model_Member::get_password_validation($values);
+
+		return $this->values($values, $expected)->update($extra_validation);
+	}
+
 }
