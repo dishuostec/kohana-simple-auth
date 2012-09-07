@@ -9,7 +9,7 @@ class Model_Auth_Member extends ORM
 
   public function labels()
   {
-	return array();
+    return array();
   }
 
   public function rules()
@@ -84,25 +84,34 @@ class Model_Auth_Member extends ORM
 			->rule('password', 'min_length', array(':value', 6));
 	}
 
-	public function create_user($values, $expected)
-	{
-		$extra_validation = Model_Member::get_password_validation($values)
-			->rule('password', 'not_empty');
+	public static function get_password_confirm_validation($values)
+  {
+    return Validation::factory($values)
+      ->rule('password', 'min_length', array(':value', 6))
+      ->rule('password_confirm', 'matches', array(':validation', ':field', 'password'));
+  }
 
-		return $this->values($values, $expected)->create($extra_validation);
-	}
+  public function create_user($values, $expected)
+  {
+    $extra_validation = Model_Member::get_password_validation($values)
+      ->rule('password', 'not_empty')
+      ->labels($this->labels());
 
-	public function update_user($values, $expected = NULL)
-	{
-		if (empty($values['password']))
-		{
-			unset($values['password']);
-		}
+    return $this->values($values, $expected)->create($extra_validation);
+  }
 
-		// Validation for passwords
-		$extra_validation = Model_Member::get_password_validation($values);
+  public function update_user($values, $expected = NULL)
+  {
+    if (empty($values['password']))
+    {
+      unset($values['password']);
+    }
 
-		return $this->values($values, $expected)->update($extra_validation);
-	}
+    // Validation for passwords
+    $extra_validation = Model_Member::get_password_confirm_validation($values)
+      ->labels($this->labels());
+
+    return $this->values($values, $expected)->update($extra_validation);
+  }
 
 }
