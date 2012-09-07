@@ -9,48 +9,37 @@ class Model_Auth_Member extends ORM
 
   public function labels()
   {
-    return array(
-      'username'         => '用户名',
-      'password'         => '密码',
-      'realname'         => '公司名',
-    );
+	return array();
   }
 
   public function rules()
   {
-    return array(
-      'username' => array(
-        array('not_empty'),
-        array('max_length', array(':value', 20)),
-      ),
-      'password' => array(
-        array('not_empty'),
-        array('max_length', array(':value', 32)),
-      ),
-      'realname' => array(
-        array('not_empty'),
-        array('max_length', array(':value', 50)),
-      ),
-    );
+	return array(
+	  'username' => array(
+		array('not_empty'),
+		array('max_length', array(':value', 20)),
+	  ),
+	  'password' => array(
+		array('not_empty'),
+		array('max_length', array(':value', 32)),
+	  ),
+	  'realname' => array(
+		array('not_empty'),
+		array('max_length', array(':value', 50)),
+	  ),
+	);
   }
 
   public function filters()
   {
-    return array(
-      'username' => array(
-        array('htmlspecialchars')
-      ),
-      'realname' => array(
-        array('htmlspecialchars')
-      )
-    );
-  }
-
-	public function create(Validation $validation = NULL)
-  {
-    $this->id = $this->genarate_uuid();
-
-    parent::create($validation);
+	return array(
+	  'username' => array(
+		array('htmlspecialchars')
+	  ),
+	  'realname' => array(
+		array('htmlspecialchars')
+	  )
+	);
   }
 
 	public function unique_key($value)
