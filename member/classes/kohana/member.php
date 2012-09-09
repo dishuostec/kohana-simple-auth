@@ -2,6 +2,8 @@
 
 abstract class Kohana_Member extends Kohana_Auth
 {
+	protected static $_instance;
+
 	public static function instance()
 	{
 		if ( ! isset(Member::$_instance))
