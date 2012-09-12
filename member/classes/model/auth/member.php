@@ -107,4 +107,29 @@ class Model_Auth_Member extends ORM
     return $this->values($values, $expected)->update($extra_validation);
   }
 
+	public static function get_password_confirm_validation($values)
+  {
+    return Validation::factory($values)
+      ->rule('password', 'min_length', array(':value', 6))
+      ->rule('password_confirm', 'matches', array(':validation', ':field', 'password'));
+  }
+
+  public function change_password(array $values, $expected_old_password_key = 'password_old')
+  {
+    if ( ! Member::instance()->check_password($values[$expected_old_password_key])) {
+      $valid = Validation::factory(array());
+      $valid
+        ->labels($model->labels())
+        ->error('password', 'old_password_error');
+      $exception = new ORM_Validation_Exception($model->errors_filename(), $valid);
+
+      throw $exception;
+    }
+
+    $extra_validation = Model_Member::get_password_confirm_validation($values)
+      ->labels($this->labels());
+
+    return $this->values($values, array('password'))->update($extra_validation);
+  }
+
 }
