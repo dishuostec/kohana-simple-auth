@@ -84,13 +84,6 @@ class Model_Auth_Member extends ORM
 			->rule('password', 'min_length', array(':value', 6));
 	}
 
-	public static function get_password_confirm_validation($values)
-  {
-    return Validation::factory($values)
-      ->rule('password', 'min_length', array(':value', 6))
-      ->rule('password_confirm', 'matches', array(':validation', ':field', 'password'));
-  }
-
   public function create_user($values, $expected)
   {
     $extra_validation = Model_Member::get_password_validation($values)
@@ -108,7 +101,7 @@ class Model_Auth_Member extends ORM
     }
 
     // Validation for passwords
-    $extra_validation = Model_Member::get_password_confirm_validation($values)
+    $extra_validation = Model_Member::get_password_validation($values)
       ->labels($this->labels());
 
     return $this->values($values, $expected)->update($extra_validation);
