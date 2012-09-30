@@ -62,6 +62,8 @@ class Model_Auth_Member extends ORM
 		}
   }
 
+  public function complete_logout() {}
+
 	public function unique_key_exists($value, $field = NULL)
 	{
 		if ($field === NULL)

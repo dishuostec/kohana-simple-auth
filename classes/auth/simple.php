@@ -58,7 +58,7 @@ class Auth_Simple extends Kohana_Auth_ORM
     if ($mark_session_as_forced === TRUE)
     {
       // Mark the session as forced, to prevent users from changing account information
-      $this->_session->set('auth_forced', TRUE);
+      $this->_session->set('member_forced', TRUE);
     }
 
     // Run the standard completion
@@ -75,7 +75,12 @@ class Auth_Simple extends Kohana_Auth_ORM
   public function logout($destroy = FALSE, $logout_all = FALSE)
   {
     // Set by force_login()
-    $this->_session->delete('auth_forced');
+    $this->_session->delete('member_forced');
+
+    $user = $this->get_user();
+    if ($user !== NULL) {
+      $user->complete_logout();
+    }
 
     return parent::logout($destroy);
   }
