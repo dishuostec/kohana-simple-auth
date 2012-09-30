@@ -62,14 +62,6 @@ class Model_Auth_Member extends ORM
 		}
   }
 
-	public function complete_logout(){}
-
-  public function logout($destroy = FALSE, $logout_all = FALSE)
-  {
-    $this->complete_logout();
-    parent::logout($destroy, $logout_all);
-  }
-
 	public function unique_key_exists($value, $field = NULL)
 	{
 		if ($field === NULL)
