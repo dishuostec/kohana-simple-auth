@@ -6,7 +6,7 @@ return array(
 	'hash_method'  => FALSE,
 	'hash_key'     => FALSE,
 	'session_type' => Session::$default,
-	'session_key'  => 'copo',
+	'session_key'  => 'member_user',
 
 	// Username/password combinations for the Auth File driver
 	'users' => array(
